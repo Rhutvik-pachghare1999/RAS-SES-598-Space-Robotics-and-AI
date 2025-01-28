@@ -1,0 +1,6 @@
+float64 average_cross_track_error
+float32 cross_track_error
+float32 current_velocity
+float32 distance_to_next_waypoint
+float32 completion_percentage
+string  additional_info

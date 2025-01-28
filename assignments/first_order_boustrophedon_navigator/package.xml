@@ -7,6 +7,10 @@
   <maintainer email="jnaneshwar.das@gmail.com">jdas</maintainer>
   <license>TODO: License declaration</license>
 
+  <build_depend>rosidl_default_generators</build_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+
   <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
   <depend>turtlesim</depend>
