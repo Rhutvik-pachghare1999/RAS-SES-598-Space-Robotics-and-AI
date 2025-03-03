@@ -29,11 +29,11 @@ def generate_launch_description():
         os.environ['GZ_SIM_RESOURCE_PATH'] = gz_model_path
 
     # Set initial drone pose - start at 1m height
-    os.environ['PX4_GZ_MODEL_POSE'] = '0 0 1 0 0 0'
+    os.environ['PX4_GZ_MODEL_POSE'] = '0 0 0.1 0 0 0'
     
-    # Launch PX4 SITL with x500_gimbal
+    # Launch PX4 SITL with x500_depth
     px4_sitl = ExecuteProcess(
-        cmd=['make', 'px4_sitl', 'gz_x500_gimbal'],
+        cmd=['make', 'px4_sitl', 'gz_x500_depth_mono'],
         cwd=os.environ['HOME'] + '/PX4-Autopilot',
         output='screen'
     )
@@ -65,18 +65,36 @@ def generate_launch_description():
             'use_sim_time': True,
         }],
         arguments=[
-            # Camera topics (one-way from Gazebo to ROS)
+            # Front RGB Camera
             '/camera@sensor_msgs/msg/Image[gz.msgs.Image',
             '/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
-            # PX4 odometry (one-way from Gazebo to ROS)
-            '/model/x500_gimbal_0/odometry_with_covariance@nav_msgs/msg/Odometry[gz.msgs.Odometry',
-            # Clock (one-way from Gazebo to ROS)
+            
+            # Front Depth Camera
+            '/depth_camera/depth_image@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloud',
+            
+            # Down Mono Camera
+            '/mono_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/mono_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            
+            # Clock
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
         ],
         remappings=[
-            ('/camera', '/drone_camera'),
-            ('/camera_info', '/drone_camera_info'),
-            ('/model/x500_gimbal_0/odometry_with_covariance', '/fmu/out/vehicle_odometry'),
+            # Front RGB Camera remappings
+            ('/camera', '/drone/front_rgb'),
+            ('/camera_info', '/drone/front_rgb/camera_info'),
+            
+            # Front Depth Camera remappings
+            ('/depth_camera/depth_image', '/drone/front_depth'),
+            ('/depth_camera/points', '/drone/front_depth/points'),
+            
+            # Down Mono Camera remappings
+            ('/mono_camera', '/drone/down_mono'),
+            ('/mono_camera/camera_info', '/drone/down_mono/camera_info'),
+            
+            # Odometry remapping
+            ('/model/x500_depth_mono_0/odometry_with_covariance', '/fmu/out/vehicle_odometry'),
         ],
         output='screen'
     )
