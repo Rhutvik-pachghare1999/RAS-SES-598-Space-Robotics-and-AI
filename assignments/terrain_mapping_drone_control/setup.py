@@ -24,8 +24,11 @@ setup(
             glob('models/cylinder/*.*')),
         ('share/' + package_name + '/models/cylinder/materials',
             glob('models/cylinder/materials/*.*')),
-        ('share/' + package_name + '/scripts',
-            glob('scripts/*.*')),
+        ('lib/' + package_name, [
+            'terrain_mapping_drone_control/geometry_tracker.py',
+            'terrain_mapping_drone_control/cylinder_landing_node.py',
+            'terrain_mapping_drone_control/aruco_tracker.py'
+        ])
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -36,8 +39,13 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'px4_odom_converter = terrain_mapping_drone_control.px4_odom_converter:main',
-            'cylinder_landing_node = terrain_mapping_drone_control.cylinder_landing_node:main',
+            'terrain_mapping_drone_control_px4_odom_converter = terrain_mapping_drone_control.px4_odom_converter:main',
+            'terrain_mapping_drone_control_cylinder_landing_node = terrain_mapping_drone_control.cylinder_landing_node:main',
+            'terrain_mapping_drone_control_geometry_tracker = terrain_mapping_drone_control.geometry_tracker:main',
+            'terrain_mapping_drone_control_feature_tracker = terrain_mapping_drone_control.feature_tracker:main',
+            'terrain_mapping_drone_control_pose_visualizer = terrain_mapping_drone_control.pose_visualizer:main',
+            'terrain_mapping_drone_control_spiral_trajectory = terrain_mapping_drone_control.spiral_trajectory:main',
+            'terrain_mapping_drone_control_aruco_tracker = terrain_mapping_drone_control.aruco_tracker:main',
         ],
     },
     python_requires='>=3.8'

@@ -5,6 +5,8 @@ from rclpy.node import Node
 from px4_msgs.msg import VehicleCommand, VehicleControlMode, OffboardControlMode, TrajectorySetpoint, VehicleOdometry, VehicleStatus
 import time
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy, QoSDurabilityPolicy
+from geometry_msgs.msg import Point
+from std_msgs.msg import Float32MultiArray
 
 class SimpleTestNode(Node):
     def __init__(self):
@@ -33,11 +35,21 @@ class SimpleTestNode(Node):
         self.vehicle_status_subscriber = self.create_subscription(
             VehicleStatus, '/fmu/out/vehicle_status',
             self.vehicle_status_callback, qos_profile)
+            
+        # Subscribe to geometry tracker outputs
+        self.cylinder_pose_subscriber = self.create_subscription(
+            Point, '/geometry/cylinder_center',
+            self.cylinder_pose_callback, 10)
+        self.cylinder_info_subscriber = self.create_subscription(
+            Float32MultiArray, '/geometry/cylinder_info',
+            self.cylinder_info_callback, 10)
 
         # Initialize variables
         self.offboard_setpoint_counter = 0
         self.vehicle_odometry = VehicleOdometry()
         self.vehicle_status = VehicleStatus()
+        self.cylinder_position = None
+        self.cylinder_info = None
         
         # Flight parameters
         self.TARGET_HEIGHT = 1.0  # meters
@@ -109,6 +121,23 @@ class SimpleTestNode(Node):
             return abs(current_height - self.TARGET_HEIGHT) < self.POSITION_THRESHOLD
         except (IndexError, AttributeError):
             return False
+
+    def cylinder_pose_callback(self, msg):
+        """Store cylinder position from geometry tracker."""
+        self.cylinder_position = msg
+        if self.offboard_setpoint_counter % 10 == 0:  # Log every second
+            self.get_logger().info(
+                f'Cylinder at pixel ({msg.x:.1f}, {msg.y:.1f}) depth {msg.z:.2f}m'
+            )
+
+    def cylinder_info_callback(self, msg):
+        """Store cylinder information from geometry tracker."""
+        self.cylinder_info = msg.data  # [width, height, angle, confidence]
+        if self.offboard_setpoint_counter % 10 == 0:  # Log every second
+            self.get_logger().info(
+                f'Cylinder size: {msg.data[0]:.1f}x{msg.data[1]:.1f} '
+                f'angle: {msg.data[2]:.1f}° confidence: {msg.data[3]:.2f}'
+            )
 
     def control_loop(self):
         """Timer callback for control loop."""

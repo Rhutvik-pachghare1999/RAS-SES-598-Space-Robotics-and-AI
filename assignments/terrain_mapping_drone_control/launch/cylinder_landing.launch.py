@@ -70,6 +70,7 @@ def generate_launch_description():
             '/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
             
             # Front Depth Camera
+            '/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image',
             '/depth_camera/depth_image@sensor_msgs/msg/Image[gz.msgs.Image',
             '/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloud',
             
@@ -77,8 +78,9 @@ def generate_launch_description():
             '/mono_camera@sensor_msgs/msg/Image[gz.msgs.Image',
             '/mono_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
             
-            # Clock
+            # Clock and Odometry
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+            '/model/x500_depth_mono_0/odometry_with_covariance@nav_msgs/msg/Odometry[gz.msgs.OdometryWithCovariance',
         ],
         remappings=[
             # Front RGB Camera remappings
@@ -86,7 +88,8 @@ def generate_launch_description():
             ('/camera_info', '/drone/front_rgb/camera_info'),
             
             # Front Depth Camera remappings
-            ('/depth_camera/depth_image', '/drone/front_depth'),
+            ('/depth_camera', '/drone/front_depth'),
+            ('/depth_camera/depth_image', '/drone/front_depth/depth'),
             ('/depth_camera/points', '/drone/front_depth/points'),
             
             # Down Mono Camera remappings
@@ -112,5 +115,11 @@ def generate_launch_description():
         TimerAction(
             period=3.0,
             actions=[bridge]
+        ),
+        Node(
+            package='terrain_mapping_drone_control',
+            executable='geometry_tracker.py',
+            name='geometry_tracker',
+            output='screen'
         )
     ]) 
