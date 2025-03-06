@@ -38,14 +38,33 @@ def generate_launch_description():
         output='screen'
     )
     
-    # Spawn the cylinder with ArUco marker
-    spawn_cylinder = Node(
+    # Spawn the first cylinder (front, full height)
+    spawn_cylinder_front = Node(
         package='ros_gz_sim',
         executable='create',
         arguments=[
             '-file', os.path.join(model_path, 'cylinder', 'model.sdf'),
-            '-name', 'cylinder',
+            '-name', 'cylinder_front',
             '-x', '5',     # 5 meters in front of the drone
+            '-y', '0',     # centered on y-axis
+            '-z', '0',     # at ground level
+            '-R', '0',     # no roll
+            '-P', '0',     # no pitch
+            '-Y', '0',     # no yaw
+            '-scale', '1 1 1',  # normal scale
+            '-static'      # ensure it's static
+        ],
+        output='screen'
+    )
+
+    # Spawn the second cylinder (behind, 7m height)
+    spawn_cylinder_back = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=[
+            '-file', os.path.join(model_path, 'cylinder_short', 'model.sdf'),
+            '-name', 'cylinder_back',
+            '-x', '-5',    # 5 meters behind the drone
             '-y', '0',     # centered on y-axis
             '-z', '0',     # at ground level
             '-R', '0',     # no roll
@@ -110,16 +129,14 @@ def generate_launch_description():
         px4_sitl,
         TimerAction(
             period=2.0,
-            actions=[spawn_cylinder]
+            actions=[spawn_cylinder_front]
+        ),
+        TimerAction(
+            period=2.5,
+            actions=[spawn_cylinder_back]
         ),
         TimerAction(
             period=3.0,
             actions=[bridge]
-        ),
-        Node(
-            package='terrain_mapping_drone_control',
-            executable='geometry_tracker.py',
-            name='geometry_tracker',
-            output='screen'
         )
     ]) 
