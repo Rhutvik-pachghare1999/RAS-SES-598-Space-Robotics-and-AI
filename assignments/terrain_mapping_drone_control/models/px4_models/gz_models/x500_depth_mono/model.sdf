@@ -5,18 +5,18 @@
       <uri>x500</uri>
     </include>
     <include merge='true'>
-      <uri>model://OakD-Lite</uri>
+      <uri>model://OakD-Lite-Modify</uri>
       <pose>.12 .03 .242 0 0 0</pose>
     </include>
     <joint name="CameraJoint" type="fixed">
       <parent>base_link</parent>
-      <child>OakD-Lite/base_link</child>
+      <child>OakD-Lite-Modify/base_link</child>
       <pose relative_to="base_link">.12 .03 .242 0 0 0</pose>
     </joint>
 
     <!-- Mono Camera Link -->
     <link name="mono_camera_link">
-      <pose>0 0 0.2 0 1.5707963267948966 0</pose>
+      <pose>0 0 0.15 0 1.5707963267948966 0</pose>
       <inertial>
         <mass>0.050</mass>
         <inertia>
@@ -58,17 +58,20 @@
           <emissive>0 0 0 1</emissive>
         </material>
       </visual>
+
       <sensor name="mono_camera" type="camera">
         <camera>
           <horizontal_fov>1.204</horizontal_fov>
           <image>
-            <width>1920</width>
-            <height>1080</height>
+            <width>800</width>
+            <height>600</height>
           </image>
           <clip>
             <near>0.1</near>
-            <far>3000</far>
+            <far>100</far>
           </clip>
+          <camera_info_topic>mono_camera/camera_info</camera_info_topic>
+          <optical_frame_id>mono_camera_link</optical_frame_id> 
         </camera>
         <always_on>1</always_on>
         <update_rate>30</update_rate>
