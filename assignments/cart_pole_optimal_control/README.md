@@ -1,7 +1,6 @@
 # Cart-Pole Optimal Control Assignment
 
-[Watch the demo video](https://drive.google.com/file/d/1UEo88tqG-vV_pkRSoBF_-FWAlsZOLoIb/view?usp=sharing)
-![image](https://github.com/user-attachments/assets/c8591475-3676-4cdf-8b4a-6539e5a2325f)
+PLease find the images and videos in the end of this read me file
 
 ## Overview
 This assignment challenges students to tune and analyze an LQR controller for a cart-pole system subject to earthquake disturbances. The goal is to maintain the pole's stability while keeping the cart within its physical constraints under external perturbations. The earthquake force generator in this assignment introduces students to simulating and controlling systems under seismic disturbances, which connects to the Virtual Shake Robot covered later in the course. The skills developed here in handling dynamic disturbances and maintaining system stability will be useful for optimal control of space robots, such as Lunar landers or orbital debris removal robots.
@@ -608,9 +607,19 @@ Arrow lengths are proportional to force magnitudes.
    - **Effectiveness**: Ensure that both systems can stabilize the pole and move the cart to the desired position.
    - **Adaptability**: Assess how well the DQN adapts to different initial conditions or disturbances compared to LQR.
 
-      LQR RUNNING MODEL AFTER STABILIZATION :
+ LQR RUNNING MODEL AFTER STABILIZATION :
+    SCREENSHOT:  ![Screenshot from 2025-03-27 21-29-06](https://github.com/user-attachments/assets/046ee85c-a380-45a1-88c0-6f93033229c7)
+
+  LQR MODEL BEFORE AND AFTER STABILIZATION VIDEO:
+     VIDEO: ![Screencast from 2025-03-27 21-30-31.webm](https://github.com/user-attachments/assets/8a985f0a-2d33-4587-a983-bab543869296)
      
-     
+
+Dqn after STABILIZATION:
+    Screenshot : ![Screenshot from 2025-03-27 21-38-36](https://github.com/user-attachments/assets/ef65838b-927f-4bb7-9cb5-9d6c47aae91b)
+    
+DQL MODEL Trying to stabilize: 
+      Video:    
+![Screencast from 2025-03-27 21-30-31.webm](https://github.com/user-attachments/assets/99f633cc-f802-4459-bae2-e5d4a80a63f6)
 
      REFER THE .TXT FILE FOR MORE INFORMATION 
 
