@@ -611,7 +611,7 @@ Arrow lengths are proportional to force magnitudes.
     SCREENSHOT:  
     [Screenshot from 2025-03-27 21-29-06](https://github.com/user-attachments/assets/046ee85c-a380-45a1-88c0-6f93033229c7)
 
-  LQR MODEL BEFORE AND AFTER STABILIZATION VIDEO:
+  LQR MODEL Trying to STABILIZE
      VIDEO: 
      [Screencast from 2025-03-27 21-30-31.webm](https://github.com/user-attachments/assets/591d7acd-a730-4ec2-ace3-df6216521825)
 
