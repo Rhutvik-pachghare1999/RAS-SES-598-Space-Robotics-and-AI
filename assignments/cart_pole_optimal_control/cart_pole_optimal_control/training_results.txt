@@ -1,0 +1,12 @@
+training_results.png
+
+This visualization presents insightful progress in reinforcement learning training.
+
+Epsilon Decay Over Time: The epsilon value decreases rapidly, which suggests that the agent transitions from an exploratory phase to an exploitation phase efficiently, leveraging learned experiences to make better decisions.
+Rewards Over Time: The reward fluctuations indicate a consistent learning process. While there are variations, the agent maintains a steady interaction with the environment, suggesting stable learning dynamics.
+Pole Angle (Theta) Over Time: The controlled variations in pole angle imply that the agent is actively balancing the pole within a reasonable range. This is a positive sign that the training model is effectively keeping the system stable.
+
+
+Overall, the graphs indicate that the reinforcement learning model is successfully progressing through its training stages, transitioning from exploration to exploitation while maintaining consistent control over the environment.
+
+Note: Higher you train greater model stabilize.changes are maded in lqr_controller check read_me_lqr.txt to know that 
