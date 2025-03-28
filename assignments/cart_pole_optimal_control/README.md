@@ -607,6 +607,9 @@ Arrow lengths are proportional to force magnitudes.
    - **Effectiveness**: Ensure that both systems can stabilize the pole and move the cart to the desired position.
    - **Adaptability**: Assess how well the DQN adapts to different initial conditions or disturbances compared to LQR.
 
+Model: 
+ Find it in directory as it cant be upload here.
+ 
  LQR RUNNING MODEL AFTER STABILIZATION :
     SCREENSHOT:  
     [Screenshot from 2025-03-27 21-29-06](https://github.com/user-attachments/assets/046ee85c-a380-45a1-88c0-6f93033229c7)
