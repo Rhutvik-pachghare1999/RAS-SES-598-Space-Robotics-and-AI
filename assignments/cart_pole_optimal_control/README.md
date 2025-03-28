@@ -1,6 +1,6 @@
 # Cart-Pole Optimal Control Assignment
 
-PLease find the images, and videos in the end of this read me file
+PLease find the images and videos in the end of this read me file
 
 ## Overview
 This project implements both an LQR controller and a Dueling DQN reinforcement learning agent for stabilizing a cart-pole system under earthquake disturbances. The goal is to maintain the pole's stability while ensuring the cart stays within its physical limits despite external perturbations. The earthquake force generator introduces real-world-like disturbances, making the control challenge more complex.
