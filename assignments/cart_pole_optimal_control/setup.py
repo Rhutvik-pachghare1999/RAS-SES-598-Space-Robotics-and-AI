@@ -27,6 +27,7 @@ setup(
     license='Creative Commons Attribution 4.0',
     entry_points={
         'console_scripts': [
+            #'dqn_controller = cart_pole_optimal_control.dqn_controller:main',
             'lqr_controller = cart_pole_optimal_control.lqr_controller:main',
             'earthquake_force_generator = cart_pole_optimal_control.earthquake_force_generator:main',
             'force_visualizer = cart_pole_optimal_control.force_visualizer:main',
