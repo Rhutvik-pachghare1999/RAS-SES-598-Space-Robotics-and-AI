@@ -623,7 +623,7 @@ DQL MODEL Trying to stabilize:
       Video:    
 [Screencast from 2025-03-27 21-32-08.webm](https://github.com/user-attachments/assets/9516eaf4-01ad-4d7c-bb43-97ca759b387b)
 
-     REFER THE .TXTREFER THE .TXT FILE FOR MORE INFORMATION  FILE FOR MORE INFORMATION 
+     REFER THE .TXT  FILE FOR MORE INFORMATION 
 
 
 
