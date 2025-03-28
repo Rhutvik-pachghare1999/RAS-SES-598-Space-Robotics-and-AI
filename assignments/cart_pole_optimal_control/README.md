@@ -608,22 +608,22 @@ Arrow lengths are proportional to force magnitudes.
    - **Adaptability**: Assess how well the DQN adapts to different initial conditions or disturbances compared to LQR.
 
  LQR RUNNING MODEL AFTER STABILIZATION :
-    SCREENSHOT:  [Screenshot from 2025-03-27 21-29-06](https://github.com/user-attachments/assets/046ee85c-a380-45a1-88c0-6f93033229c7)
+    SCREENSHOT:  
+    [Screenshot from 2025-03-27 21-29-06](https://github.com/user-attachments/assets/046ee85c-a380-45a1-88c0-6f93033229c7)
 
   LQR MODEL BEFORE AND AFTER STABILIZATION VIDEO:
-     VIDEO: [Screencast from 2025-03-27 21-30-31.webm](https://github.com/user-attachments/assets/8a985f0a-2d33-4587-a983-bab543869296)
-     
+     VIDEO: 
+     [Screencast from 2025-03-27 21-30-31.webm](https://github.com/user-attachments/assets/591d7acd-a730-4ec2-ace3-df6216521825)
 
 Dqn after STABILIZATION:
-    Screenshot : [Screenshot from 2025-03-27 21-38-36](https://github.com/user-attachments/assets/ef65838b-927f-4bb7-9cb5-9d6c47aae91b)
+    Screenshot :
+    [Screenshot from 2025-03-27 21-38-36](https://github.com/user-attachments/assets/ef65838b-927f-4bb7-9cb5-9d6c47aae91b)
     
 DQL MODEL Trying to stabilize: 
       Video:    
-[Screencast from 2025-03-27 21-30-31.webm](https://github.com/user-attachments/assets/99f633cc-f802-4459-bae2-e5d4a80a63f6)
+[Screencast from 2025-03-27 21-32-08.webm](https://github.com/user-attachments/assets/9516eaf4-01ad-4d7c-bb43-97ca759b387b)
 
-     REFER THE .TXT FILE FOR MORE INFORMATION 
-
-
+     REFER THE .TXTREFER THE .TXT FILE FOR MORE INFORMATION  FILE FOR MORE INFORMATION 
 
 
 
