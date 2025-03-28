@@ -1,0 +1,21 @@
+The key functionality of DQN_controller
+
+DQNController class that uses a trained Deep Q-Network (DQN) to control and stabilize a cart-pole system over a simulation. The system is modeled using state variables representing the cart's position, velocity, and the pole's angle and angular velocity. The controller operates in three phases with distinct behaviors:
+
+1. Phase 1 (Control Delay): The system starts with a soft correction to keep the pole upright. If the pole's angle exceeds a small threshold, corrective forces are applied to stabilize it.
+
+2. Phase 2 (Initial Movement): Once the control delay phase ends, a constant force is applied to the cart to start moving it. During this phase, the pole’s angle is kept within safe limits.
+
+3. Phase 3 (DQN Control): After the initial movement, the DQN model is used to predict the appropriate action (force) to apply based on the current state. The action is mapped to one of five predefined force values, which is then applied to control the cart and stabilize the pole.
+
+4. Final Phase (Stabilization): After the DQN phase, the system transitions to a final phase where the cart halts, and the pole is perfectly upright.
+
+The controller clamps the pole’s angle to a safe range throughout all phases to avoid excessive tilt. The system runs for a fixed amount of time, with time-stepping controlled by the `dt` parameter. During each step, the controller computes the appropriate force and updates the system's state, eventually stabilizing the pole.
+
+The DQN model is loaded from a pre-trained file (`dqn_cart_pole.pth`), and the controller steps through the simulation, printing the current force applied and the state of the system at each timestep.
+
+# Key Features:
+- DQN Control: Uses a neural network to decide the control force.
+- Three Phases: The controller transitions through three phases: initial stability, cart movement, and pole stabilization.
+- Safety Measures: Ensures the pole stays within safe angle limits at all times.
+- Simulation: Runs a simulation with a fixed timestep, printing the control force and system state at each step.

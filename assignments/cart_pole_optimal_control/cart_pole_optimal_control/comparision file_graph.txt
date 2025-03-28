@@ -1,0 +1,8 @@
+The comparison graphs show the following insights:
+
+1) Cart Position Stability: DQN maintains a more stable cart position compared to LQR, which exhibits larger fluctuations.
+
+2) Pole Angle Stability: The DQN-controlled system keeps the pole angle closer to the vertical position, whereas LQR has larger deviations.
+
+3) Control Effort: DQN applies a more discrete control policy (action values), while LQR uses continuous control forces. Despite this, DQN achieves better stability with fewer fluctuations.
+

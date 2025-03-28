@@ -1,0 +1,19 @@
+The key functionality of the `CartPoleLQRController`:
+
+- Cart-Pole System Modeling: The system dynamics are represented using linearized state-space equations with parameters like cart mass, pole mass, pole length, and gravitational acceleration.
+
+- LQR Control: Implements a Linear Quadratic Regulator (LQR) to compute an optimal control force that stabilizes the pole in an upright position by minimizing a cost function related to the state and control effort.
+
+- State Initialization & Perturbation: Introduces a small perturbation to the system's initial conditions to simulate instability and test the controller's ability to stabilize the system.
+
+- State Estimation: The system state (cart position, velocity, pole angle, and pole angular velocity) is updated from incoming `JointState` messages from ROS 2.
+
+- Control Loop: Runs a real-time control loop that calculates the control force based on the current state and applies the control force to the cart through the ROS 2 publisher.
+
+- Data Logging: Logs the system's state and control force to a CSV file for analysis.
+
+- ROS 2 Integration: Subscribes to `JointState` messages and publishes control commands to the appropriate topic for actuation.
+
+- Force Clipping: The control force is clipped to a maximum value to prevent exceeding the system's capabilities.
+
+- Time Management: The control loop operates with a fixed time step and limits the total simulation time.

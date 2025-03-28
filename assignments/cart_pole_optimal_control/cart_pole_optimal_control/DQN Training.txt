@@ -1,0 +1,41 @@
+### Key Functionality of the DQN Training Script  
+
+#### 1. Define the DQN Model
+- A Deep Q-Network (DQN) is created using a Three-layer fully connected neural network.
+- Uses Batch Normalization for stable training.
+- The model takes in state inputs and outputs Q-values for each action.
+
+#### 2. Implement the DQN Agent
+- Stores experiences in a replay buffer (with prioritized experience replay).
+- Uses an epsilon-greedy policy for exploration-exploitation tradeoff.
+- Double DQN approach is used to prevent overestimation of Q-values.
+- Periodically updates the target network using Polyak averaging.
+
+#### 3. Memory and Experience Replay
+- Experiences (state, action, reward, next_state, done) are stored in a deque.
+- Prioritized Experience Replay: Assigns higher probability to important transitions (TD-error-based priority).
+- Batches are sampled based on priority for better learning efficiency.
+
+#### 4. Training the DQN Agent
+- Samples a batch from memory and calculates Q-values.
+- Computes target Q-values using Double DQN for stable learning.
+- Updates priorities in replay buffer based on TD-error.
+- Uses gradient clipping to prevent exploding gradients.
+- Updates epsilon to gradually shift from exploration to exploitation.
+
+#### 5. Loading and Preparing LQR Data**
+- Reads LQR-generated training data from a CSV file.
+- Converts continuous LQR actions into discrete action bins (5 categories).
+- Defines reward function based on pole angle and angular velocity.
+- Prepares data as (state, action, reward, next_state, done) for training.
+
+#### 6. Training Process
+- Iterates through LQR data and trains the agent.
+- Saves epsilon decay, reward history, and pole angle history.
+- Updates the target network periodically for stable learning.
+
+#### 7. Saving and Plotting Results**
+- Saves trained model to a file (`dqn_cart_pole.pth`).
+- Saves training results (states, actions, rewards) to a CSV file.
+- Generates plots for epsilon decay, rewards, and pole angle over time.
+- Saves training performance graphs as an image file (`training_results.png`).
