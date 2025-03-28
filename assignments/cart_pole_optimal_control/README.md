@@ -1,6 +1,6 @@
 # Cart-Pole Optimal Control Assignment
 
-PLease find the images and videos in the end of this read me file
+PLease find the images and videos in the end of this read me file, and i couldnt upload ros2_ws so i uploaded it here all files [https://github.com/Rhutvik-pachghare1999/RAS-SES-598-Space-Robotics-and-AI/tree/main/assignments/cart_pole_optimal_control/cart_pole_optimal_control]
 
 ## Overview
 This project implements both an LQR controller and a Dueling DQN reinforcement learning agent for stabilizing a cart-pole system under earthquake disturbances. The goal is to maintain the pole's stability while ensuring the cart stays within its physical limits despite external perturbations. The earthquake force generator introduces real-world-like disturbances, making the control challenge more complex.
@@ -500,18 +500,19 @@ source install/setup.bash
 ros2 launch cart_pole_optimal_control cart_pole_rviz.launch.py
 ```
 
+
 This will start:
 - Gazebo simulation (headless mode)
 - RViz visualization showing:
   * Cart-pole system
   * Force arrows (control and disturbance forces)
   * TF frames for system state
-- LQR controller
-- Earthquake force generator
-- Force visualizer
-- run DQN Training
-- run Comparision File
-- comment lqr controller and uncomment dqn controller, run dqn_controller
+ 
+Steps how to run 
+- LQR controller[run it with commands]
+- run DQN Training[run it in visual code to get the .pth model file]
+- run Comparision File [run it in visual code to get comparsion charts]
+- comment lqr controller and uncomment dqn controller, run dqn_controller [run it with commands]
 
 ### Visualization Features
 The RViz view provides a side perspective of the cart-pole system with:
