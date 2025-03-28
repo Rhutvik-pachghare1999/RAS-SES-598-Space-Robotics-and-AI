@@ -464,22 +464,300 @@ Arrow lengths are proportional to force magnitudes.
    - Pole angle stability
    - Control effort efficiency
 
-### Analysis Guidelines
-1. Baseline Performance:
-   - Document system behavior with default parameters
-   - Identify key performance bottlenecks
-   - Analyze disturbance effects
+### Analysis of  LQR Controller Based on the Guidelines
 
-2. Parameter Effects:
-   - Analyze how Q matrix weights affect different states
-   - Study R value's impact on control aggressiveness
-   - Document trade-offs between objectives
+## 1. Baseline Performance
+ i) System Behavior with Default Parameters
 
-3. Disturbance Response:
-   - Characterize system response to different disturbance frequencies
-   - Analyze recovery behavior
-   - Study control effort distribution
+- controller initializes with:
+
+    a) Cart mass (M): 1.0 kg
+
+    b) Pole mass (m): 0.1 kg
+
+    c) Pole length (L): 0.5 m
+
+    d) Gravity (g): 9.81 m/s²
+
+- The state vector (x) is correctly extracted from the ROS /joint_state topic.
+
+- Control force (u = -Kx) is computed using an LQR gain (K), which is calculated via the continuous algebraic Riccati equation (CARE).
+
+- Data is logged in lqr_data.csv, capturing system evolution.
+
+ii) Key Performance Bottlenecks
+
+- Control Saturation: The control force is limited to ±20.0 N, which may limit performance in extreme conditions.
+
+- Computation Delay: LQR updates every 5 ms (self.create_timer(0.005, self.control_loop)), which should be sufficient but could be tested for real-time lag.
+
+- Initial Perturbation: Introduces controlled instability but may require tuning to balance fast recovery without excessive control effort
+
+iii) Disturbance Effects
+   
+- Intentional Perturbation: x[2][0] = 0.4 (pole tilt) and x[3][0] = 0.3 (angular velocity) introduce initial disturbance.
+
+- Oscillatory Perturbations in control_loop:
+
+a) First half of the experiment (< max_time / 2): Sinusoidal perturbations (sin(t), cos(t)) increase instability.
+
+b) Second half (> max_time / 2): Oscillations gradually decay to mimic stabilization.
+
+## 2. Parameter Effects
+   
+- Q Matrix Effects on Different States
+ Q matrix:
+![Screenshot from 2025-03-28 14-29-32](https://github.com/user-attachments/assets/de7183bd-601c-4da1-8547-9972ed2f9a5c)
+
+  i) Q[0,0] = 50 (Cart position weight):
+
+Penalizes cart displacement, encouraging it to stay near the center.
+
+ii) Q[1,1] = 10 (Cart velocity weight):
+
+Moderate weight; allows controlled movement without excessive resistance.
+
+iii) Q[2,2] = 100 (Pole angle weight):
+
+Highest weight, ensuring the system prioritizes pole stabilization.
+
+iv) Q[3,3] = 10 (Pole velocity weight):
+
+Allows some flexibility in angular velocity without harsh corrections.
+
+- Expected Behavior from Q Matrix Choice
+   
+i) Pole stabilization is prioritized, with cart position being secondary.
+
+ii) A higher Q[0,0] could reduce cart movement further but may slow recovery.
+
+iii) Increasing Q[3,3] would further suppress angular velocity swings but could require more control effort.
+
+
+- R Matrix (Control Effort) Impact on Aggressiveness
+ R matrix:
+
+                       𝑅 = [0.1]
+
+  a) A low R value (0.1) allows for aggressive control, leading to fast response but potentially higher control effort.
+
+  b) If R were increased (e.g., R = 1.0), the control effort would be smoother but less responsive, possibly leading to slower stabilization.
+
+- Trade-offs Between Objectives
   
+a) Higher Q[2,2] (pole stability priority) → More forceful control → Potentially larger cart displacement.
+
+b) Higher R (penalizing control effort) → Smoother control → Slower stabilization.
+
+c) Lower Q[0,0] (cart position priority) → Allows cart to move more to stabilize the pole faster.
+
+## 3. Disturbance Response
+
+- System Response to Different Disturbance Frequencies
+
+a) Initial perturbation: Pole starts with 0.4 rad tilt and 0.3 rad/s velocity.
+
+b) Control loop applies sinusoidal disturbances:
+
+i) High frequency (sin(t), cos(t)) in the first half.
+
+ii) Lower frequency (sin(t/2), cos(t/2)) in the second half to mimic damping.
+
+- Expected Observations
+
+a) In the first half, increased oscillations should be visible as the system struggles against disturbances.
+
+b) In the second half, stabilization should become more evident as disturbances reduce.
+
+- Recovery Behavior Analysis
+  
+a) The system should recover within a few seconds based on LQR tuning.
+
+b) If oscillations persist, R might need to be increased for smoother control.
+
+c) The LQR gain matrix (K) ensures state-dependent corrections, adjusting based on pole angle and velocity.
+
+- Control Effort Distribution
+  
+a) Force is clipped at ±20.0 N, so extreme inputs are prevented.
+
+b) Data logging (lqr_data.csv) allows post-analysis:
+
+i) checking if force distribution is too aggressive or insufficient.
+
+ii) Identifying if control effort spikes, which could indicate instability.
+
+### Analyse performance of DQN Training
+## 1. Baseline Performance
+   
+-System Behavior with Default Parameters
+a) The DQN agent is trained using LQR data extracted from a CSV file.
+
+= State dimensions: 4 (Cart position, velocity, pole angle, angular velocity).
+
+- Action space: Discretized into 5 bins based on force magnitude.
+
+b) Rewards:
+
+- Penalizes absolute pole angle (theta) to encourage stability.
+
+- Small penalty on angular velocity (theta_dot) to prevent excessive oscillations.
+
+c) Neural Network Structure:
+
+- Three fully connected layers (128 neurons each).
+
+- Uses Batch Normalization for improved training stability.
+
+d) Exploration Strategy:
+
+- Starts with ε = 1.0 (fully random actions).
+
+- Decays exponentially (ε *= 0.995 per step) to 0.01.
+
+e) Target Network:
+
+- Updated every 100 steps using Polyak averaging (τ = 0.01).
+
+f) Key Performance Bottlenecks
+
+- Action Discretization:
+
+Force values are binned into 5 discrete levels, which may limit fine-grained control.
+
+- Epsilon Decay Rate (0.995):
+
+May reduce exploration too quickly, leading to premature exploitation.
+
+- Training on LQR Data Only:
+
+a) DQN may simply mimic LQR instead of improving upon it.
+
+b) Training in real-time simulation might be required to refine behavior.
+
+## 2. Parameter Effects
+- Q-Matrix Weights & State Impact
+a) The DQN learns a value function (Q-values) for each state-action pair.
+
+b) Theta (pole angle) has the highest reward weight, making it the most significant factor in action selection.
+
+c) Cart position (x) is not explicitly penalized, allowing movement to stabilize the pole.
+
+d) Angular velocity (theta_dot) contributes to reward, affecting long-term stability.
+
+- Effect of Epsilon Decay on Control Policy
+a) Initial ε = 1.0 ensures full exploration but quickly decays.
+
+b) If exploration reduces too fast (ε *= 0.995), the agent may settle into suboptimal policies early.
+
+- Possible Fix:
+
+a) Use a slower decay (ε *= 0.999) for more balanced exploration.
+
+b) Keep minimum ε = 0.1 instead of 0.01 to maintain some randomness.
+
+- Trade-offs Between Objectives
+
+a) DQN vs. LQR Performance:
+
+- LQR uses continuous actions, while DQN uses discrete bins, possibly leading to jerky control.
+
+- If DQN is not trained further in simulation, it may only replicate LQR instead of outperforming it.
+
+b) Prioritized Experience Replay (PER) Benefits:
+
+- Gives more importance to high-TD-error transitions, improving learning efficiency.
+
+- However, over-reliance on high-TD samples may reduce generalization.
+
+## 3. Disturbance Response
+   
+a) System Response to Different Disturbance Frequencies
+b) The trained DQN model is initially influenced by LQR data, so disturbance response may mirror LQR performance.
+
+- Sinusoidal perturbations:
+
+a) If these are not present in the LQR dataset, DQN may struggle with unseen disturbances.
+
+b) Further training in a dynamic environment is necessary.
+
+= Recovery Behavior
+a) The DQN should recover from small disturbances similarly to LQR.
+
+
+- Control Effort Distribution
+a) Forces are applied in discrete steps (5 bins).
+
+b) This might lead to non-smooth control, unlike LQR.
+
+c) Gradient clipping (1.0) prevents instability, ensuring numerical stability in learning.
+
+### Analysis of DQN_controller
+
+## 1. Baseline Performance
+a) System Behavior Across Phases
+The controller operates in three distinct phases, each with specific control strategies:
+
+- Phase 1: Control Delay (0 - 3 sec)
+
+a) No force applied if pole is upright (|θ| < 0.1 rad).
+
+b) Small corrective force (±5.0) if pole starts to tilt.
+
+c) Helps prevent immediate instability while allowing slight natural motion.
+
+- Phase 2: Initial Move (3 - 6 sec)
+
+a) Constant force of 15.0 applied to move the cart.
+
+b) Ensures initial displacement for stabilization testing.
+
+c) Pole angle (θ) is clamped within ±0.1 rad to prevent extreme tilts.
+
+- Phase 3: DQN Control (6 - 11 sec)
+
+a) DQN policy selects force values from {−10, −5, 0, 5, 10}.
+
+b) Uses fully trained model (dqn_cart_pole.pth) to decide actions.
+
+c) Adjusts force based on state observation.
+
+- Final Phase: Halt & Stabilization (After 11 sec)
+
+a) Force set to 0.0 (no active control).
+
+b) Cart position (x) and pole angle (θ) clamped to zero for stability.
+
+
+## 2. Parameter Effects & Key Considerations
+
+-DQN Network Architecture & Learning Constraints
+
+=Fully connected architecture:
+
+a) 3 layers (64 neurons each), activated with ReLU.
+
+b) No batch normalization, making training more sensitive to weight initialization.
+
+c) Discrete action space (5 force levels) may limit fine-grained stabilization.
+
+d) DQN is trained separately; no real-time learning adaptation.
+
+## 3. Impact of Phases on Performance
+  ![Screenshot from 2025-03-28 15-08-30](https://github.com/user-attachments/assets/dc3e61af-d137-4ba4-b2d1-9d0053414e53)
+- Key Concern: Fixed force of 15.0 in Phase 2 might cause excessive displacement before DQN takes over.
+
+## 4. Disturbance Response & Robustness
+ 
+-DQN Control (6-11 sec) only sees limited state variations (trained offline).
+
+= If real-world disturbances are present (sinusoidal perturbations, external forces), adaptation is limited.
+
+- State vector is clamped (θ restricted to ±0.1 rad), preventing large corrections.
+
+
+
+
    ### Performance Metrics and Analysis Guidelines
 
 #### 1. DQN Training Code
