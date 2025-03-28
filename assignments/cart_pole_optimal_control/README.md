@@ -531,8 +531,7 @@ i) Pole stabilization is prioritized, with cart position being secondary.
 
 ii) A higher Q[0,0] could reduce cart movement further but may slow recovery.
 
-iii) Increasing Q[3,3] would further suppress angular velocity swings but could require more control effort.
-
+iii) Increasing Q[3,3] would further suppress angular velocity swings 
 
 - R Matrix (Control Effort) Impact on Aggressiveness
  R matrix:
