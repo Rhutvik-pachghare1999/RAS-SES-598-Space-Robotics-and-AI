@@ -3,7 +3,7 @@
 PLease find the images and videos in the end of this read me file
 
 ## Overview
-This assignment challenges students to tune and analyze an LQR controller for a cart-pole system subject to earthquake disturbances. The goal is to maintain the pole's stability while keeping the cart within its physical constraints under external perturbations. The earthquake force generator in this assignment introduces students to simulating and controlling systems under seismic disturbances, which connects to the Virtual Shake Robot covered later in the course. The skills developed here in handling dynamic disturbances and maintaining system stability will be useful for optimal control of space robots, such as Lunar landers or orbital debris removal robots.
+This project implements both an LQR controller and a Dueling DQN reinforcement learning agent for stabilizing a cart-pole system under earthquake disturbances. The goal is to maintain the pole's stability while ensuring the cart stays within its physical limits despite external perturbations. The earthquake force generator introduces real-world-like disturbances, making the control challenge more complex.
 
 ## System Description
 
