@@ -83,6 +83,15 @@ def generate_launch_description():
             output='screen'
         ),
 
+        # DQN Controller (commented out for now)
+        # Node(
+        #     package='cart_pole_optimal_control',
+        #     executable='dqn_controller',
+        #     name='dqn_controller',
+        #     output='screen'
+        # ),
+
+
         # Earthquake Force Generator
         Node(
             package='cart_pole_optimal_control',

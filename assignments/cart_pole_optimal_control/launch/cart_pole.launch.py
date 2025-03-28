@@ -53,13 +53,21 @@ def generate_launch_description():
             output='screen'
         ),
 
-        # Controller
+        # LQR Controller
         Node(
             package='cart_pole_optimal_control',
             executable='lqr_controller',
             name='lqr_controller',
             output='screen'
         ),
+
+        # DQN Controller (commented out for now)
+        # Node(
+        #     package='cart_pole_optimal_control',
+        #     executable='dqn_controller',
+        #     name='dqn_controller',
+        #     output='screen'
+        # ),
 
         # Earthquake Force Generator
         Node(
@@ -73,4 +81,4 @@ def generate_launch_description():
                 'update_rate': 50.0  # Update rate in Hz
             }]
         )
-    ]) 
+    ])
