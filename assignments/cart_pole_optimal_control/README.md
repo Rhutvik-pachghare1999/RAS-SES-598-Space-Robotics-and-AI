@@ -389,7 +389,7 @@ The training process is recorded in both CSV files (dqn_results.csv and lqr_data
 - Real-World RL Applications: Apply RL to control dynamic systems, manage safety constraints, and adapt control strategies over time.
 - Practical RL Tools: Get hands-on experience using PyTorch for DQN implementation and handling large datasets in RL.
 - Model Improvement and Debugging: Learn to tune hyperparameters, stabilize training, and evaluate RL models effectively.
-- 
+  
 ## Implementation
 
 ### LQR Controller Description
