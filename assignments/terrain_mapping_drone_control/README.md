@@ -56,7 +56,6 @@ ros2 run mission Mission.py
 
 This project demonstrates the integration of autonomous flight planning, depth-based object estimation, and visual servoing. The drone performs high-level spatial understanding through circular flight while achieving low-level precision through marker-based landing techniques.
 
-A special thanks to **Bharat** for his collaboration and invaluable assistance during this mission.
 
 ---
 
