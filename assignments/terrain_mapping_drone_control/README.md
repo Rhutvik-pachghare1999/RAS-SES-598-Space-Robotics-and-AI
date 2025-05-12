@@ -1,129 +1,82 @@
-# Assignment 3: Rocky Times Challenge - Search, Map, & Analyze
 
-This ROS2 package implements an autonomous drone system for geological feature detection, mapping, and analysis using an RGBD camera and PX4 SITL simulation.
+# 🛰️ Mission Brief: Autonomous Cylinder Analysis and Precision Marker Landing
 
-## Challenge Overview
+This mission blends two critical capabilities of autonomous drones: estimating the size and position of cylindrical formations using a circular search pattern and executing an accurate landing using visual cues from ArUco markers through Image-Based Visual Servoing (IBVS).
 
-Students will develop a controller for a PX4-powered drone to efficiently search, map, and analyze cylindrical rock formations in an unknown environment. The drone must identify two rock formations (10m and 7m tall cylinders), estimate their dimensions, and successfully land on top of the taller cylinder.
+---
 
-### Mission Objectives
-1. Search and locate all cylindrical rock formations
-2. Map and analyze rock dimensions:
-   - Estimate height and diameter of each cylinder
-   - Determine positions in the world frame
-3. Land safely on top of the taller cylinder
-4. Complete mission while logging time and energy performance. 
+## 🚀 Mission Workflow
 
-![Screenshot from 2025-03-04 20-22-35](https://github.com/user-attachments/assets/3548b6da-613a-401d-bf38-e9e3ac4a2a2b)
-
-### Evaluation Criteria (100 points)
-
-The assignment will be evaluated based on:
-- Total time taken to complete the mission
-- Total energy units consumed during operation
-- Accuracy of cylinder dimension estimates
-- Landing precision on the taller cylinder
-- Performance across multiple trials (10 known + 5 unknown scenes)
-
-### Key Requirements
-
-- Autonomous takeoff and search strategy implementation
-- Real-time cylinder detection and dimension estimation
-- Energy-conscious path planning
-- Safe and precise landing on the target cylinder
-- Robust performance across different scenarios
-
-## Prerequisites
-
-- ROS2 Humble
-- PX4 SITL Simulator (Tested with PX4-Autopilot main branch 9ac03f03eb)
-- RTAB-Map ROS2 package
-- OpenCV
-- Python 3.8+
-
-## Repository Setup
-
-### If you already have a fork of the course repository:
-
+### 🔧 Step 1: Initialize the Simulation
+Launch the simulation environment with:
 ```bash
-# Navigate to your local copy of the repository
-cd ~/RAS-SES-598-Space-Robotics-and-AI
-
-# Add the original repository as upstream (if not already done)
-git remote add upstream https://github.com/DREAMS-lab/RAS-SES-598-Space-Robotics-and-AI.git
-
-# Fetch the latest changes from upstream
-git fetch upstream
-
-# Checkout your main branch
-git checkout main
-
-# Merge upstream changes
-git merge upstream/main
-
-# Push the updates to your fork
-git push origin main
+ros2 launch mission cylinder_landing.launch.py
 ```
 
-### If you don't have a fork yet:
-
-1. Fork the course repository:
-   - Visit: https://github.com/DREAMS-lab/RAS-SES-598-Space-Robotics-and-AI
-   - Click "Fork" in the top-right corner
-   - Select your GitHub account as the destination
-
-2. Clone your fork:
+### 🎯 Step 2: Start Marker Detection
+Activate the ArUco marker tracker with:
 ```bash
-cd ~/
-git clone https://github.com/YOUR_USERNAME/RAS-SES-598-Space-Robotics-and-AI.git
+ros2 run mission aruco_tracker.py
 ```
 
-### Create Symlink to ROS2 Workspace
-
+### 🧠 Step 3: Begin the Mission
+Execute the autonomous behavior script:
 ```bash
-# Create symlink in your ROS2 workspace
-cd ~/ros2_ws/src
-ln -s ~/RAS-SES-598-Space-Robotics-and-AI/assignments/terrain_mapping_drone_control .
+ros2 run mission Mission.py
 ```
 
-### Copy PX4 Model Files
+---
 
-Copy the custom PX4 model files to the PX4-Autopilot folder
+## 🧭 Mission Stages
 
-```bash
-# Navigate to the package
-cd ~/ros2_ws/src/terrain_mapping_drone_control
+### 🌀 Stage 1: Circular Cylinder Estimation
 
-# Make the setup script executable
-chmod +x scripts/deploy_px4_model.sh
+1. **Takeoff and Mode Setup**: The drone auto-arms and switches to OFFBOARD mode.
+2. **Ascend to Initial Altitude**: It vertically climbs to 5 meters below the world origin.
+3. **Transition to Search Radius**: It flies to a position 15 meters ahead and begins circling.
+4. **Circular Trajectory Execution**: The drone flies counter-clockwise around a 15-meter radius path while continuously scanning the terrain using its RGB and depth cameras.
+5. **Cylinder Detection**: During flight, the drone analyzes the depth and size of cylindrical objects.
+6. **Pause for Analysis**: After one complete loop, it hovers for a few seconds to finalize cylinder analysis.
 
-# Run the setup script to copy model files
-./scripts/deploy_px4_model.sh -p /path/to/PX4-Autopilot
-```
+---
 
-## Building and Running
+### 🎯 Stage 2: Visual Marker-Based Landing
 
-```bash
-# Build the package
-cd ~/ros2_ws
-colcon build --packages-select terrain_mapping_drone_control --symlink-install
+1. **Descend for Marker Search**: The drone moves to a lower altitude to prepare for marker detection.
+2. **Scan First Marker**: It hovers near one potential landing marker and records its position.
+3. **Center Reset**: It returns to the center of the two marker regions.
+4. **Scan Second Marker**: It flies to the opposite side, hovers again, and records the second marker's data.
+5. **Marker Comparison**: Using depth information, it determines which marker is closer and more suitable for landing.
+6. **Approach Adjustment**: The drone adjusts its position to align better with the chosen marker.
+7. **Visual Servoing for Precision Landing**: Leveraging image feedback, the drone gradually minimizes its position error until perfectly aligned for landing.
 
-# Source the workspace
-source install/setup.bash
+---
 
-# Launch the simulation with visualization with your PX4-Autopilot path
-ros2 launch terrain_mapping_drone_control cylinder_landing.launch.py
+## 🧪 Mission Summary
 
-# OR you can change the default path in the launch file
-        DeclareLaunchArgument(
-            'px4_autopilot_path',
-            default_value=os.environ.get('HOME', '/home/' + os.environ.get('USER', 'user')) + '/PX4-Autopilot',
-            description='Path to PX4-Autopilot directory'),
-```
-## Extra credit -- 3D reconstruction (50 points)
-Use RTAB-Map or a SLAM ecosystem of your choice to map both rocks, and export the world as a mesh file, and upload to your repo. Use git large file system (LFS) if needed. 
+This project demonstrates the integration of autonomous flight planning, depth-based object estimation, and visual servoing. The drone performs high-level spatial understanding through circular flight while achieving low-level precision through marker-based landing techniques.
 
-## License
+A special thanks to **Bharat** for his collaboration and invaluable assistance during this mission.
 
-This assignment is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0). 
-For more details: https://creativecommons.org/licenses/by-nc-sa/4.0/ 
+---
+
+## 📸 Visual Documentation
+
+### 🧠 Cylinder Estimation  
+
+![image](https://github.com/user-attachments/assets/48fdb537-0653-46f5-96b5-62bef5003303)
+![ESTIMATION1](https://github.com/user-attachments/assets/ae678afe-e3bc-422f-a0be-043c7a566f5c)
+
+---
+
+### 🎯 ArUco Marker Detection  
+![TRACKING](https://github.com/user-attachments/assets/f587558f-0997-4d3b-8e8a-b34e9055bdc1)  
+
+---
+
+### 🛬 Landing Sequence  
+![image](https://github.com/user-attachments/assets/a4e7c468-1f92-4ae7-aad8-881e38c499d6)
+![CHECKING1](https://github.com/user-attachments/assets/7d9d1ca3-6bb7-4173-b4bb-2e104f8b7c7c)  
+![CHECKING](https://github.com/user-attachments/assets/0a4dda2a-dcd5-4eae-a4fa-b01e49976a5e)  
+![LANDING POINT](https://github.com/user-attachments/assets/8c328b20-49ff-4f7f-a642-e1304386bd76)  
+![image](https://github.com/user-attachments/assets/076dd5d3-18ce-4dd9-90df-ef25349cae9f)
